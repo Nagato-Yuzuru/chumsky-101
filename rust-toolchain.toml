@@ -1,0 +1,8 @@
+#:schema https://www.schemastore.org/rust-toolchain.json
+[toolchain]
+channel = "stable"
+components = [
+    "rustfmt",   # formatting (cargo fmt)
+    "clippy",    # lints — your best Rust teacher
+    "rust-src",  # std sources, so editor "go to definition" reaches the stdlib
+]

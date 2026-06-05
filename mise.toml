@@ -1,0 +1,6 @@
+[tools]
+prek = "latest"
+"aqua:nextest-rs/nextest/cargo-nextest" = "latest"
+"aqua:mitsuhiko/insta" = "latest"
+"cargo:cargo-expand" = "latest"
+just = "latest"

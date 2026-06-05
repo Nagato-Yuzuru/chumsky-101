@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit config — for a repo where we learn chumsky / Rust / parsers & PL.
+# Goal: make the AI reviewer act as a mentor that explains the "why" (not just
+# flagging issues), and guides us toward idiomatic Rust, parser-combinator
+# thinking, and PL concepts. Reviews are in English on purpose (language practice).
+# Docs: https://docs.coderabbit.ai/reference/configuration
+
+language: "en-US"
+
+# tone_instructions: max 250 chars; sets the reviewer's overall voice.
+tone_instructions: >
+  You are a patient Rust and parser mentor. Beyond flagging issues, explain the
+  reasoning, trade-offs, and idiomatic alternatives, linking chumsky/Rust
+  concepts where useful. Encourage learning; avoid lecturing.
+
+reviews:
+  # assertive: more detailed, even nitpicky suggestions — for learning, more signal is better.
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  # Attach a "prompt for AI agents" to inline comments so we can hand it to Claude to apply.
+  enable_prompt_for_ai_agents: true
+
+  path_filters:
+    - "!target/**"
+    - "!Cargo.lock"
+    - "!.idea/**"
+
+  # Teaching-oriented review focus for Rust sources.
+  path_instructions:
+    - path: "**/*.rs"
+      instructions: >
+        Review as a Rust and parser mentor. Focus on:
+        (1) Non-idiomatic Rust (needless clone/unwrap, places simplifiable with
+        iterators / the ? operator / pattern matching) and explain why the
+        idiomatic form is better;
+        (2) chumsky parser combinators: whether combinator composition, error
+        recovery, and recursion/precedence handling are correct, suggesting
+        clearer compositions where helpful;
+        (3) Use the code to surface relevant PL concepts (token vs AST, left
+        recursion, precedence, error-recovery strategies) — a sentence or two,
+        not an essay;
+        (4) Explain the "why" behind each suggestion and give runnable improved
+        code snippets where possible.
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - "main"
+      - "master"
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  # Remember our preferences and recurring suggestions across PRs to gradually
+  # personalize the learning feedback.
+  learnings:
+    scope: "auto"
